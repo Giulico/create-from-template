@@ -40,16 +40,35 @@ function createTemplate(settings) {
             ]
         ).then((res) => {
 
-            const name = res.name;
-            const componentDirectory = `${destPath}/${name}/`;
+            const componentDirectory = `${destPath}/${res.name}/`;
 
+            // Make component dir
             fs.mkdirSync(`${componentDirectory}`);
 
-            const js = require(srcPath)({
-                name
-            });
+            // Loop throught template files
+            fs.readdirSync(srcPath).forEach(name => {
 
-            fs.writeFileSync(`${componentDirectory}${name}.js`, js);
+                const fileStats = `${srcPath}/${name}`;
+
+                if (fs.lstatSync(fileStats).isDirectory()) {
+                    console.log('DIRECTORY SKIPPED');
+                } else {
+
+                    const templateFile = require(`${srcPath}/${name}`);
+
+                    console.log('File of type: ', typeof templateFile);
+
+                    if (typeof templateFile === 'function') {
+
+                        fs.writeFileSync(`${componentDirectory}${name}`, templateFile({
+                            name: res.name
+                        }));
+
+                    } else {
+                        console.log(chalk.red(`Template ${name} doesn't export a function`))
+                    }
+                }
+            })
 
             resolve();
 
