@@ -2,7 +2,9 @@ const path = require('path');
 const fs = require('fs');
 const {camelCase, upperFirst} = require('lodash/string');
 const inquirer = require('inquirer');
-var appRoot = require('app-root-path').path;
+const appRoot = require('app-root-path').path;
+const shell = require('shelljs');
+const chalk = require('chalk');
 
 function createTemplate(settings) {
 
@@ -16,7 +18,8 @@ function createTemplate(settings) {
     try {
         fs.lstatSync(destPath).isDirectory();
     } catch(err) {
-        fs.mkdirSync(`${appRoot}/components`);
+        console.log(chalk.black.bold.bgYellow(`Destination path didn\'t exist. CFT made it for you.\n>>> ${destPath}\n\nDid you miss to read the documentation? -> https://github.com/Giulico/create-from-template`));
+        shell.mkdir('-p', destPath);
     }
 
     return new Promise((resolve, reject) => {
