@@ -26,7 +26,7 @@ if (Array.isArray(cftConfig)) {
     //
     // "commitizen": [
     //   {
-    //     "name": "stocazzo",
+    //     "name": "template name",
     //     "templatePath": "node_modules/cz-aq-changelog"
     //   }
     // ]
