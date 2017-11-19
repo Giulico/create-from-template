@@ -18,9 +18,7 @@ function createTemplate(settings) {
     try {
         fs.lstatSync(destPath).isDirectory();
     } catch(err) {
-        console.log(
-            chalk.black.bold.bgYellow(`Destination path didn\'t exist. CFT made it for you.\n>>> ${destPath}\n\nDid you miss to read the documentation? -> https://github.com/Giulico/create-from-template`)
-        );
+        console.log(chalk.black.bold.bgYellow(`Destination path didn\'t exist. CFT made it for you.\n>>> ${destPath}\n\nDid you miss to read the documentation? -> https://github.com/Giulico/create-from-template`));
         shell.mkdir('-p', destPath);
     }
 
@@ -58,7 +56,7 @@ function createTemplate(settings) {
 
                     const templateFile = require(`${srcPath}/${name}`);
 
-                    // console.log('File of type: ', typeof templateFile);
+                    console.log('File of type: ', typeof templateFile);
 
                     if (typeof templateFile === 'function') {
 

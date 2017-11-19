@@ -8,10 +8,7 @@ const sh = require('shelljs');
 const utils = require('./utils/index');
 const createTemplate = require('./cft/create');
 
-const getNearestNodeModulesDirectory = utils.getNearestNodeModulesDirectory;
-const getNearestProjectRootDirectory = utils.getNearestProjectRootDirectory;
-
-let packageJsonPath = path.join(getNearestProjectRootDirectory(), 'package.json');
+let packageJsonPath = path.resolve(appRoot, 'package.json');
 let packageJsonString = fs.readFileSync(packageJsonPath, 'utf-8');
 
 // tries to detect the indentation and falls back to a default if it can't
@@ -27,7 +24,7 @@ const settings = {};
 
 const customTemplatePath = _.get(packageJsonContent, 'config.cft.templatePath');
 if (typeof customTemplatePath === 'string' && customTemplatePath.length > 0) {
-    // console.log('got a custom template ', customTemplatePath);
+    console.log('got a custom template ', customTemplatePath);
     settings.srcPath = path.resolve(appRoot, customTemplatePath, 'template');
 }
 
@@ -36,6 +33,7 @@ if (typeof customDestPath === 'string' && customDestPath.length > 0) {
     settings.destPath = customDestPath;
 }
 
+// console.log(Object.assign({}, defaultSettings, settings));
 createTemplate(Object.assign({}, defaultSettings, settings));
 
 
