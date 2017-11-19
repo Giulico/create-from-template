@@ -60,6 +60,35 @@ In order to configure cft, open your package.json, search (or add) "*config*", a
 }
 ```
 
+## Multiple templates
+Cft support multiple templates. When you run the script it will ask you which template you want to use.
+
+To setup multiple templates, just set `config/cft` as array:
+```javascript
+{
+    // ...
+    "config": {
+        "cft": [
+            {
+                "name": "Stateless components",
+                "templatePath": "path_to_stateless_template_folder",
+                "destPath": "path_to_stateless_destination_folder"
+            },
+            {
+                "name": "Containers",
+                "templatePath": "path_to_container_template_folder",
+                "destPath": "path_to_container_destination_folder"
+            },
+            {
+                "name": "Generic module",
+                "templatePath": "path_to_generic_modules_template_folder",
+                "destPath": "path_to_generic_modules_destination_folder"
+            }
+        ]
+    }
+    // ...
+}
+```
 ## Custom templates
 You can place your custom template wherever you want. I suggest you to create a new repo and install it as dev dependency.
 
