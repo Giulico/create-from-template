@@ -1,19 +1,35 @@
 # create-from-template
 Create a component from a template.
 
-## Configuration
+## Install cft
 
-### Installation
+From your favourite package manager:
 ```bash
 yarn add -D create-custom-template
 ```
-
-evenutally install your custom templates (aka adapters)
+Now you should be able to create from templates
 ```bash
-yarn add -D cft-adapter
+node node_modules/create-from-template
 ```
+or add add a script to your package.json
+```javascript
+{
+    // ...
+    "scripts": {
+        // ...
+        "cft": "node node_modules/create-from-template"
+    }
+    // ...
+}
+```
+then
+```bash
+yarn cft
+```
+## Configuration
+In order to configure cft, open your package.json, search (or add) "*config*", and create "*cft*" property with the following options.
 
-package.json
+`package.json`
 ```javascript
 {
     // ...
@@ -41,11 +57,23 @@ package.json
 ```
 
 ## Custom templates
-Ok, let's create a custom template!
+You can place your custom template wherever you want. I suggest you to create a new repo and install it as dev dependency.
+
+Ok, let's create a custom template.
 
 A custom template is a `template` folder which contains a list of files. Each file *must* export a function.
 
 es.
+
+```
+node_modules/
+    cft_adapter/
+        template/
+            file.js
+            my_other_file.scss
+
+```
+
 `template/file.js`
 ```javascript
 module.exports = (params) => `
