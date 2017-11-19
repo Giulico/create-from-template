@@ -35,6 +35,10 @@ In order to configure cft, open your package.json, search (or add) "*config*", a
     // ...
     "config": {
         "cft": {
+            // Template name
+            // es. "Dumb component"
+            "name": "template_name",
+
             // templatePath specifies the path, starting from your
             // app root folder, of the templates folder
             // es. "node_modules/cft_adapter"
