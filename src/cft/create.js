@@ -11,10 +11,11 @@ function createTemplate(settings) {
     // Don't let things move forward if required args are missing
     checkRequiredArguments(settings);
 
+    const name = settings.name;
     const destPath = settings.destPath;
     const srcPath = settings.srcPath;
 
-    // Is destPath doesn't exist, create it
+    // If destPath doesn't exist, create it
     try {
         fs.lstatSync(destPath).isDirectory();
     } catch(err) {
@@ -40,6 +41,12 @@ function createTemplate(settings) {
             ]
         ).then((res) => {
 
+            // Check if srcPath exists
+            if (!fs.existsSync(srcPath) || !fs.lstatSync(srcPath).isDirectory()) {
+                console.log(chalk.red('Specified templatePath doesn\'t exists'));
+                return;
+            }
+
             const componentDirectory = `${destPath}/${res.name}/`;
 
             // Make component dir
@@ -48,15 +55,13 @@ function createTemplate(settings) {
             // Loop throught template files
             fs.readdirSync(srcPath).forEach(name => {
 
-                const fileStats = `${srcPath}/${name}`;
+                const srcFilePath = `${srcPath}/${name}`;
 
-                if (fs.lstatSync(fileStats).isDirectory()) {
-                    console.log('DIRECTORY SKIPPED');
+                if (fs.lstatSync(srcFilePath).isDirectory()) {
+                    console.log(chalk.yellow('Sub directory are not currently supported'));
                 } else {
 
                     const templateFile = require(`${srcPath}/${name}`);
-
-                    console.log('File of type: ', typeof templateFile);
 
                     if (typeof templateFile === 'function') {
 
@@ -86,6 +91,9 @@ function createTemplate(settings) {
  * Throws an exception if any are not.
  */
 function checkRequiredArguments(settings) {
+  if (!settings.name) {
+    throw "name is required when running createTemplate function.";
+  }
   if (!settings.srcPath) {
     throw "srcPath is required when running createTemplate function.";
   }

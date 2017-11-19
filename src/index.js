@@ -2,11 +2,10 @@ const path = require('path');
 const appRoot = require('app-root-path').path;
 const fs = require('fs');
 const _ = require('lodash');
-const findNodeModules = require('find-node-modules');
 const detectIndent = require('detect-indent');
-const sh = require('shelljs');
-const utils = require('./utils/index');
 const createTemplate = require('./cft/create');
+
+const init = require('./cft/init');
 
 let packageJsonPath = path.resolve(appRoot, 'package.json');
 let packageJsonString = fs.readFileSync(packageJsonPath, 'utf-8');
@@ -16,25 +15,53 @@ let indent = detectIndent(packageJsonString).indent || '  ';
 let packageJsonContent = JSON.parse(packageJsonString);
 let newPackageJsonContent = '';
 
+// CFT Config
+const cftConfig = _.get(packageJsonContent, 'config.cft');
+
 const defaultSettings = {
-    srcPath: path.resolve(__dirname, './template'),
+    name: 'unknown',
+    srcPath: path.resolve(__dirname, 'template'),
     destPath: 'app/components'
 }
-const settings = {};
 
-const customTemplatePath = _.get(packageJsonContent, 'config.cft.templatePath');
-if (typeof customTemplatePath === 'string' && customTemplatePath.length > 0) {
-    console.log('got a custom template ', customTemplatePath);
-    settings.srcPath = path.resolve(appRoot, customTemplatePath, 'template');
+if (Array.isArray(cftConfig)) {
+
+    // Configuration as array
+    //
+    // "commitizen": [
+    //   {
+    //     "name": "stocazzo",
+    //     "templatePath": "node_modules/cz-aq-changelog"
+    //   }
+    // ]
+    if (cftConfig.length === 1) {
+        const settings = Object.assign({}, defaultSettings, init.getSettings(cftConfig[0]));
+        createTemplate(settings);
+    } else {
+        init
+            .chooseTemplate(cftConfig)
+            .then(config => {
+                const settings = Object.assign({}, defaultSettings, init.getSettings(config));
+                createTemplate(settings);
+            });
+    }
+
+} else if (typeof cftConfig === 'object') {
+
+    // Configuration as single object
+    //
+    //
+    // "cft": {
+    //   "templatePath": "node_modules/ctf-adapter"
+    // }
+    const settings = Object.assign({}, defaultSettings, init.getSettings(cftConfig));
+    createTemplate(settings);
+
+} else {
+
+    // No configuration specified
+    createTemplate(defaultSettings);
+
 }
-
-const customDestPath = _.get(packageJsonContent, 'config.cft.destPath');
-if (typeof customDestPath === 'string' && customDestPath.length > 0) {
-    settings.destPath = customDestPath;
-}
-
-// console.log(Object.assign({}, defaultSettings, settings));
-createTemplate(Object.assign({}, defaultSettings, settings));
-
 
 module.exports = {};
