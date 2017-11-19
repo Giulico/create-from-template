@@ -1,4 +1,5 @@
 const path = require('path');
+const appRoot = require('app-root-path').path;
 const fs = require('fs');
 const _ = require('lodash');
 const findNodeModules = require('find-node-modules');
@@ -19,15 +20,15 @@ let packageJsonContent = JSON.parse(packageJsonString);
 let newPackageJsonContent = '';
 
 const defaultSettings = {
-    templatePath: './template',
+    srcPath: path.resolve(__dirname, './template'),
     destPath: 'app/components'
 }
 const settings = {};
 
 const customTemplatePath = _.get(packageJsonContent, 'config.cft.templatePath');
 if (typeof customTemplatePath === 'string' && customTemplatePath.length > 0) {
-    console.log('got a custom template');
-    settings.templatePath = customTemplatePath;
+    // console.log('got a custom template ', customTemplatePath);
+    settings.srcPath = path.resolve(appRoot, customTemplatePath, 'template');
 }
 
 const customDestPath = _.get(packageJsonContent, 'config.cft.destPath');
@@ -35,7 +36,6 @@ if (typeof customDestPath === 'string' && customDestPath.length > 0) {
     settings.destPath = customDestPath;
 }
 
-// console.log(Object.assign({}, defaultSettings, settings));
 createTemplate(Object.assign({}, defaultSettings, settings));
 
 

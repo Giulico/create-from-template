@@ -11,14 +11,16 @@ function createTemplate(settings) {
     // Don't let things move forward if required args are missing
     checkRequiredArguments(settings);
 
-    const destPath = path.resolve(appRoot, settings.destPath);
-    const srcPath = path.resolve(__dirname, '..', settings.templatePath);
+    const destPath = settings.destPath;
+    const srcPath = settings.srcPath;
 
     // Is destPath doesn't exist, create it
     try {
         fs.lstatSync(destPath).isDirectory();
     } catch(err) {
-        console.log(chalk.black.bold.bgYellow(`Destination path didn\'t exist. CFT made it for you.\n>>> ${destPath}\n\nDid you miss to read the documentation? -> https://github.com/Giulico/create-from-template`));
+        console.log(
+            chalk.black.bold.bgYellow(`Destination path didn\'t exist. CFT made it for you.\n>>> ${destPath}\n\nDid you miss to read the documentation? -> https://github.com/Giulico/create-from-template`)
+        );
         shell.mkdir('-p', destPath);
     }
 
@@ -56,7 +58,7 @@ function createTemplate(settings) {
 
                     const templateFile = require(`${srcPath}/${name}`);
 
-                    console.log('File of type: ', typeof templateFile);
+                    // console.log('File of type: ', typeof templateFile);
 
                     if (typeof templateFile === 'function') {
 
@@ -86,8 +88,8 @@ function createTemplate(settings) {
  * Throws an exception if any are not.
  */
 function checkRequiredArguments(settings) {
-  if (!settings.templatePath) {
-    throw "templatePath is required when running createTemplate function.";
+  if (!settings.srcPath) {
+    throw "srcPath is required when running createTemplate function.";
   }
   if (!settings.destPath) {
     throw "destPath is required when running createTemplate function.";
