@@ -2,18 +2,15 @@ const path = require('path');
 const appRoot = require('app-root-path').path;
 const fs = require('fs');
 const _ = require('lodash');
-const detectIndent = require('detect-indent');
 const createTemplate = require('./cft/create');
 
 const init = require('./cft/init');
 
-let packageJsonPath = path.resolve(appRoot, 'package.json');
-let packageJsonString = fs.readFileSync(packageJsonPath, 'utf-8');
+const packageJsonPath = path.resolve(appRoot, 'package.json');
+const packageJsonString = fs.readFileSync(packageJsonPath, 'utf-8');
 
 // tries to detect the indentation and falls back to a default if it can't
-let indent = detectIndent(packageJsonString).indent || '  ';
-let packageJsonContent = JSON.parse(packageJsonString);
-let newPackageJsonContent = '';
+const packageJsonContent = JSON.parse(packageJsonString);
 
 // CFT Config
 const cftConfig = _.get(packageJsonContent, 'config.cft');
@@ -22,10 +19,9 @@ const defaultSettings = {
     name: 'unknown',
     srcPath: path.resolve(__dirname, 'template'),
     destPath: 'app/components'
-}
+};
 
 if (Array.isArray(cftConfig)) {
-
     // Configuration as array
     //
     // "commitizen": [
@@ -45,9 +41,7 @@ if (Array.isArray(cftConfig)) {
                 createTemplate(settings);
             });
     }
-
 } else if (typeof cftConfig === 'object') {
-
     // Configuration as single object
     //
     //
@@ -56,12 +50,9 @@ if (Array.isArray(cftConfig)) {
     // }
     const settings = Object.assign({}, defaultSettings, init.getSettings(cftConfig));
     createTemplate(settings);
-
 } else {
-
     // No configuration specified
     createTemplate(defaultSettings);
-
 }
 
 module.exports = {};

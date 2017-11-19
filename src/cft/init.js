@@ -27,31 +27,28 @@ function getSettings(cftConfig) {
 }
 
 function chooseTemplate(cftConfig) {
-    return inquirer.prompt(
-        [
-            {
-                type: 'list',
-                name: 'name',
-                message: 'Which template would you like to use?',
-                choices: cftConfig.map((config, index) => config.name || `unknown-${index}`)
-            }
-        ]
-    )
-    .then(answer => {
-        let config = {};
-        if (answer.name.startsWith('unknown-')) {
-            configIndex = answer.name.split('-')[1];
-            config = cftConfig[configIndex];
-        } else {
-            config = cftConfig.find(config => config.name === answer.name);
+    return inquirer.prompt([
+        {
+            type: 'list',
+            name: 'name',
+            message: 'Which template would you like to use?',
+            choices: cftConfig.map((config, index) => config.name || `unknown-${index}`)
         }
-        return config;
-    })
-    .catch(err => console.log(err));
-
+    ])
+        .then(answer => {
+            let config = {};
+            if (answer.name.startsWith('unknown-')) {
+                const configIndex = answer.name.split('-')[1];
+                config = cftConfig[configIndex];
+            } else {
+                config = cftConfig.find(c => c.name === answer.name);
+            }
+            return config;
+        })
+        .catch(err => console.log(err));
 }
 
 module.exports = {
     getSettings,
     chooseTemplate
-}
+};
