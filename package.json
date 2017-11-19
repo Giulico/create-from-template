@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
@@ -30,8 +31,13 @@
     "lodash": "4.17.4",
     "shelljs": "0.7.8"
   },
-  "config": {},
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-aq-changelog"
+    }
+  },
   "devDependencies": {
+    "cz-aq-changelog": "1.0.2",
     "nodemon": "1.12.1"
   }
 }
