@@ -1,17 +1,23 @@
 # create-from-template
+
 Create a component from a template.
 
 ## Install cft
 
 From your favourite package manager:
+
 ```bash
 yarn add -D create-custom-template
 ```
+
 Now you should be able to create from templates
+
 ```bash
 node node_modules/create-from-template
 ```
+
 or add add a script to your package.json
+
 ```javascript
 {
     // ...
@@ -22,14 +28,19 @@ or add add a script to your package.json
     // ...
 }
 ```
+
 then
+
 ```bash
 yarn cft
 ```
+
 ## Configuration
-In order to configure cft, open your package.json, search (or add) "*config*", and create "*cft*" property with the following options.
+
+In order to configure cft, open your package.json, search (or add) "_config_", and create "_cft_" property with the following options.
 
 `package.json`
+
 ```javascript
 {
     // ...
@@ -45,7 +56,7 @@ In order to configure cft, open your package.json, search (or add) "*config*", a
             //
             // (default) "node_modules/create-from-template/src/template"
             //
-            "templatePath": "path_to_template_folder",
+            "srcPath": "path_to_template_folder",
 
             // destPath specifies where to create your component
             // It also starts from your root folder
@@ -61,9 +72,11 @@ In order to configure cft, open your package.json, search (or add) "*config*", a
 ```
 
 ## Multiple templates
+
 Cft support multiple templates. When you run the script it will ask you which template you want to use.
 
 To setup multiple templates, just set `config/cft` as array:
+
 ```javascript
 {
     // ...
@@ -89,12 +102,14 @@ To setup multiple templates, just set `config/cft` as array:
     // ...
 }
 ```
+
 ## Custom templates
+
 You can place your custom template wherever you want. I suggest you to create a new repo and install it as dev dependency.
 
 Ok, let's create a custom template.
 
-A custom template is a `template` folder which contains a list of files. Each file *must* export a function.
+A custom template is a `template` folder which contains a list of files. Each file _must_ export a function.
 
 es.
 
@@ -108,16 +123,19 @@ node_modules/
 ```
 
 `template/file.js`
+
 ```javascript
-module.exports = (params) => `
+module.exports = params => `
 class ${params.name} {
     constructor() {
         return this
     }
 }
-`
+`;
 ```
+
 `template/my_other_file.scss`
+
 ```
 module.exports = (params) => `
 .root {
@@ -131,4 +149,5 @@ The string returned from the template function rapresents your output.
 Within the function you can use some parameters.
 
 ### Params
-- *name* - The name that you type in the wizard
+
+- _name_ - The name that you type in the wizard
