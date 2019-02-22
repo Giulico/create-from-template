@@ -6,7 +6,7 @@ function getSettings(cftConfig) {
     const settings = {};
 
     // Check for templatePath props
-    const customTemplatePath = cftConfig.templatePath;
+    const customTemplatePath = cftConfig.srcPath;
     if (typeof customTemplatePath === 'string' && customTemplatePath.length > 0) {
         settings.srcPath = path.resolve(appRoot, customTemplatePath, 'template');
     }

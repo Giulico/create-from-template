@@ -23,13 +23,6 @@ const defaultSettings = {
 
 if (Array.isArray(cftConfig)) {
     // Configuration as array
-    //
-    // "commitizen": [
-    //   {
-    //     "name": "template name",
-    //     "templatePath": "node_modules/cz-aq-changelog"
-    //   }
-    // ]
     if (cftConfig.length === 1) {
         const settings = Object.assign({}, defaultSettings, init.getSettings(cftConfig[0]));
         createTemplate(settings);
@@ -43,11 +36,6 @@ if (Array.isArray(cftConfig)) {
     }
 } else if (typeof cftConfig === 'object') {
     // Configuration as single object
-    //
-    //
-    // "cft": {
-    //   "templatePath": "node_modules/ctf-adapter"
-    // }
     const settings = Object.assign({}, defaultSettings, init.getSettings(cftConfig));
     createTemplate(settings);
 } else {
